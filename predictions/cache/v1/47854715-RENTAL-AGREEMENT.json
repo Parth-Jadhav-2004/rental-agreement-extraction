@@ -1,0 +1,23 @@
+{
+  "file_name": "47854715-RENTAL-AGREEMENT",
+  "source_path": "D:\\assignment-1\\data\\train\\47854715-RENTAL-AGREEMENT.docx",
+  "modality": "text",
+  "model": "muse-spark-1.3-contributor",
+  "prompt_version": "v1",
+  "repaired": false,
+  "issues_after_repair": [],
+  "extraction": {
+    "agreement_value": 9000,
+    "agreement_value_quote": "on a monthly rent of Rs.9000 (Rupees Nine Thousand Only)",
+    "agreement_start_date": "01.04.2010",
+    "agreement_start_date_quote": "for a period of 11 months starting from 1st of April 2010.",
+    "agreement_end_date": "28.02.2011",
+    "agreement_end_date_quote": "The lease is for a period of 11 months, commencing from this day, 1st of April 2010.",
+    "renewal_notice_days": 60,
+    "renewal_notice_days_quote": "Two months notice on either side shall be the condition for the lessor and lessee to terminate this lease to voluntarily vacate the premises.",
+    "party_one": "P C MATHEW",
+    "party_one_quote": "Mr. P C MATHEW, S/O K JOSEPH CHACKO",
+    "party_two": "L GOPINATH",
+    "party_two_quote": "Mr. L GOPINATH S/o of G LAKSHMI NARISIMHAN"
+  }
+}

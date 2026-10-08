@@ -1,0 +1,23 @@
+{
+  "file_name": "try-pune-apartment",
+  "source_path": "D:\\assignment-1\\data\\try\\try-pune-apartment.docx",
+  "modality": "text",
+  "model": "muse-spark-1.3-contributor",
+  "prompt_version": "v3",
+  "repaired": false,
+  "issues_after_repair": [],
+  "extraction": {
+    "agreement_value": 18500,
+    "agreement_value_quote": "on a monthly rent of Rs. 18,500/- (Rupees Eighteen Thousand Five Hundred only).",
+    "agreement_start_date": "01.06.2024",
+    "agreement_start_date_quote": "The lease shall begin on 01.06.2024 and shall end on 31.05.2025.",
+    "agreement_end_date": "31.05.2025",
+    "agreement_end_date_quote": "The lease shall begin on 01.06.2024 and shall end on 31.05.2025.",
+    "renewal_notice_days": 30,
+    "renewal_notice_days_quote": "Either party may end this lease by giving one month written notice.",
+    "party_one": "Ananya Deshpande",
+    "party_one_quote": "Ms. Ananya Deshpande, residing at Flat 4B, Laxmi Road, Pune, hereinafter called the LANDLORD,",
+    "party_two": "Rohan Mehta",
+    "party_two_quote": "Mr. Rohan Mehta, residing at 18 FC Road, Pune, hereinafter called the TENANT."
+  }
+}

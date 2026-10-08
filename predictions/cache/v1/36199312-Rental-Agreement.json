@@ -1,0 +1,23 @@
+{
+  "file_name": "36199312-Rental-Agreement",
+  "source_path": "D:\\assignment-1\\data\\train\\36199312-Rental-Agreement.png",
+  "modality": "image",
+  "model": "muse-spark-1.3-contributor",
+  "prompt_version": "v1",
+  "repaired": false,
+  "issues_after_repair": [],
+  "extraction": {
+    "agreement_value": 38000,
+    "agreement_value_quote": "The Rent is payable by the Lessees to the Lessor is a sum of Rs.3800/- (Rupees Thirty Eight Thousand Only) on or before 10th of every English Calendar Month.",
+    "agreement_start_date": "01.05.2010",
+    "agreement_start_date_quote": "This AGREEMENT of Rent is made in Bangalore and Executed today the 1stth of May 2010",
+    "agreement_end_date": "31.03.2011",
+    "agreement_end_date_quote": "This agreement is in force for a period of eleven (11) months and the same may be renewed by the mutual understanding of both the Lessor and the Lessee.",
+    "renewal_notice_days": 30,
+    "renewal_notice_days_quote": "In case of either party wants back the portion or vacates the portion either must be informed within one month prior notice.,",
+    "party_one": "Balaji.R",
+    "party_one_quote": "1. Mr. Balaji.R",
+    "party_two": "Kartheek R",
+    "party_two_quote": "1 Mr.Kartheek R"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "file_name": "228094620-Rental-Agreement",
+  "source_path": "D:\\assignment-1\\data\\test\\228094620-Rental-Agreement.pdf.docx",
+  "modality": "text",
+  "model": "muse-spark-1.3-contributor",
+  "prompt_version": "v3",
+  "repaired": false,
+  "issues_after_repair": [],
+  "extraction": {
+    "agreement_value": 15000,
+    "agreement_value_quote": "Whereas the Owner let out the house premises Plot.No.566-569, Flat.No.303, Shashank Rose Mount Apartment, Kavya Avenue Layout, Bachupally, Hyderabad, Ranga Reddy District- 500090, Andhra Pradesh.to the tenant for Residential purpose on a monthly rent of Rs. 15,000.00 (Rupees Fifteen Thousand Only).",
+    "agreement_start_date": "07.07.2013",
+    "agreement_start_date_quote": "The term of rental agreement is for a period of 11 months with effect from 7st July, 2013 to 6th June, 2014 with an option for renewal of the same by mutual consent with an increase in rent by 10%.",
+    "agreement_end_date": "06.06.2014",
+    "agreement_end_date_quote": "The term of rental agreement is for a period of 11 months with effect from 7st July, 2013 to 6th June, 2014 with an option for renewal of the same by mutual consent with an increase in rent by 10%.",
+    "renewal_notice_days": 30,
+    "renewal_notice_days_quote": "The tenant will have to vacate the flat with one months notice if found causing damage intentionally / deliberately to the property or the furniture’s and fixtures listed in point 16 without refund of any deposit or advance rent.",
+    "party_one": "KAPIL MEHROTRA",
+    "party_one_quote": "Mr. KAPIL MEHROTRA aged about 38 years, Owner of Plot.No.566-569, Flat.No.303, Shasank Rose Mount Apartment, Kavya Avenue Layout, Bachupally, Hyderabad, Ranga Reddy District-500090, and Andhra Pradesh.",
+    "party_two": "B.Kishore",
+    "party_two_quote": "Mr.B.Kishore , S/o. Mr. B. Pampaiah , aged about 31 years, R/o House no 46-107 A, 46-266, Nundy 46-365 , Budhwarpet 46-263, Kumool, Andhra Pradesh & Plot no 22 , House no 50 / 760 A - 23 Gayathri enclave , Devanagar, Kurnool, A.P"
+  }
+}

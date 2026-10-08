@@ -1,0 +1,23 @@
+{
+  "file_name": "50070534-RENTAL-AGREEMENT",
+  "source_path": "D:\\assignment-1\\data\\train\\50070534-RENTAL-AGREEMENT.docx",
+  "modality": "text",
+  "model": "muse-spark-1.3-contributor",
+  "prompt_version": "v2",
+  "repaired": false,
+  "issues_after_repair": [],
+  "extraction": {
+    "agreement_value": 10000,
+    "agreement_value_quote": "The monthly rent, water maintenance charges for the said shall be Rs. 10,000/- (Rupees Ten Thousand only)",
+    "agreement_start_date": "01.04.2010",
+    "agreement_start_date_quote": "The agreement shall be for a period of 11 months beginning form 01.04.2010 and ending with 30.03.2011.",
+    "agreement_end_date": "30.03.2011",
+    "agreement_end_date_quote": "The agreement shall be for a period of 11 months beginning form 01.04.2010 and ending with 30.03.2011.",
+    "renewal_notice_days": 90,
+    "renewal_notice_days_quote": "The House Owner and Tenant hereby agree that three months advance notice in writing is essential for the tenant for vacating the premises if he chooses to terminate this agreement during the validity period.",
+    "party_one": "P. JohnsonRavikumar",
+    "party_one_quote": "between Mr. P. JohnsonRavikumar, aged about 43 Years, residing at Plot. No: 10, Door No:3, Jeevanantham Street, Lakshmipuram Tiruvanmiyur, Chennai - 600 041.",
+    "party_two": "Saravanan BV",
+    "party_two_quote": "Mr. Saravanan BV aged about 27 years, residing at Plot. No: 10, Door No:3, Jeevanantham Street, Lakshmipuram Tiruvanmiyur, Chennai - 600 041."
+  }
+}

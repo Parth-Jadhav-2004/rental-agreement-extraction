@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Try the extractor</title>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --paper: #fffdf8;
+      --ink: #1c1915;
+      --muted: #5e574c;
+      --line: #e2d9cb;
+      --accent: #8d3b2c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      line-height: 1.5;
+    }
+    .wrap { width: min(820px, calc(100% - 32px)); margin: 0 auto; padding: 36px 0 64px; }
+    h1 {
+      margin: 0 0 8px;
+      font-family: Georgia, "Palatino Linotype", serif;
+      font-size: 36px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+    }
+    p { color: var(--muted); }
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+    .samples { display: flex; flex-wrap: wrap; gap: 8px; }
+    button, .file button {
+      background: var(--accent);
+      color: white;
+      border: 0;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font: inherit;
+      cursor: pointer;
+    }
+    button.secondary { background: #efeae0; color: var(--ink); }
+    button:disabled { opacity: 0.6; cursor: wait; }
+    input[type="file"] { display: block; margin: 10px 0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+    th { width: 34%; color: var(--muted); font-weight: 600; }
+    .quote { color: var(--muted); font-size: 14px; }
+    .status { min-height: 1.4em; color: var(--ink); }
+    .error { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Try an agreement</h1>
+    <p>Upload a <code>.docx</code> or <code>.png</code>, or run one of the files already in this project. A file that has been read before comes back immediately. A new file usually takes a few seconds.</p>
+
+    <div class="panel">
+      <strong>Sample files</strong>
+      <div class="samples" style="margin-top: 10px">
+        <button class="secondary" data-sample="50070534-RENTAL-AGREEMENT">Word, Chennai lease</button>
+        <button class="secondary" data-sample="228094620-Rental-Agreement">Word, Hyderabad lease</button>
+        <button class="secondary" data-sample="95980236-Rental-Agreement">Scanned page</button>
+        <button class="secondary" data-sample="try-pune-apartment">New Word, Pune</button>
+        <button class="secondary" data-sample="try-kochi-house">New Word, Kochi</button>
+        <button class="secondary" data-sample="try-jaipur-flat">New Word, Jaipur</button>
+      </div>
+    </div>
+
+    <form class="panel" id="upload">
+      <strong>Your file</strong>
+      <input type="file" name="file" accept=".docx,.png,.jpg,.jpeg,.webp,image/png" required>
+      <button type="submit">Extract</button>
+    </form>
+
+    <p class="status" id="status"></p>
+    <div class="panel" id="result" hidden>
+      <table>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    const status = document.querySelector("#status");
+    const result = document.querySelector("#result");
+    const rows = document.querySelector("#rows");
+    const labels = {
+      agreement_value: "Agreement value",
+      agreement_start_date: "Start date",
+      agreement_end_date: "End date",
+      renewal_notice_days: "Renewal notice (days)",
+      party_one: "Party one",
+      party_two: "Party two"
+    };
+
+    function setBusy(busy, message) {
+      document.querySelectorAll("button").forEach((button) => { button.disabled = busy; });
+      status.className = "status";
+      status.textContent = message;
+    }
+
+    function show(data) {
+      rows.replaceChildren();
+      for (const [key, label] of Object.entries(labels)) {
+        const tr = document.createElement("tr");
+        const value = data.fields[key] == null || data.fields[key] === "" ? "—" : String(data.fields[key]);
+        const quote = data.quotes[key] || "";
+        tr.innerHTML = "<th></th><td></td>";
+        tr.querySelector("th").textContent = label;
+        const cell = tr.querySelector("td");
+        cell.append(document.createTextNode(value));
+        if (quote) {
+          const note = document.createElement("div");
+          note.className = "quote";
+          note.textContent = quote;
+          cell.append(note);
+        }
+        rows.append(tr);
+      }
+      result.hidden = false;
+      status.textContent = "Done. " + data.file_name;
+    }
+
+    async function run(url, options) {
+      setBusy(true, "Reading the agreement…");
+      result.hidden = true;
+      try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "The request failed.");
+        show(data);
+      } catch (error) {
+        status.className = "status error";
+        status.textContent = error.message;
+      } finally {
+        document.querySelectorAll("button").forEach((button) => { button.disabled = false; });
+      }
+    }
+
+    document.querySelectorAll("[data-sample]").forEach((button) => {
+      button.addEventListener("click", () => {
+        run("/extract/sample/" + button.dataset.sample, { method: "POST" });
+      });
+    });
+
+    document.querySelector("#upload").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const body = new FormData(event.target);
+      run("/extract", { method: "POST", body });
+    });
+  </script>
+</body>
+</html>

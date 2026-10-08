@@ -1,0 +1,21 @@
+documents: 4
+micro exact recall: 0.667
+micro trimmed recall: 0.875
+
+field                       exact  trimmed
+agreement_value             1.000    1.000
+agreement_start_date        1.000    1.000
+agreement_end_date          0.750    0.750
+renewal_notice_days         1.000    1.000
+party_one                   0.000    1.000
+party_two                   0.250    0.500
+
+misses:
+- 24158401-Rental-Agreement | party_one | gold='Hanumaiah ' | predicted='Hanumaiah'
+- 24158401-Rental-Agreement | party_two | gold=' Vishal Bhardwaj ' | predicted='Vishal Bhardwaj'
+- 95980236-Rental-Agreement | agreement_end_date | gold='31.03.2011' | predicted='28.02.2011'
+- 95980236-Rental-Agreement | party_one | gold=' S.Sakunthala' | predicted='S.Sakunthala'
+- 156155545-Rental-Agreement-Kns-Home | party_one | gold='V.K.NATARAJ ' | predicted='V.K.NATARAJ'
+- 156155545-Rental-Agreement-Kns-Home | party_two | gold=' VYSHNAVI DAIRY SPECIALITIES Private Ltd' | predicted='SRI VYSHNAVI DAIRY SPECIALITIES Private Ltd.'
+- 228094620-Rental-Agreement | party_one | gold=' KAPIL MEHROTRA ' | predicted='KAPIL MEHROTRA'
+- 228094620-Rental-Agreement | party_two | gold='.B.Kishore ' | predicted='B.Kishore'

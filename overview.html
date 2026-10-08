@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rental agreement extraction</title>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --paper: #fffdf8;
+      --ink: #1c1915;
+      --muted: #5e574c;
+      --line: #e2d9cb;
+      --accent: #8d3b2c;
+      --accent-soft: #f6e8e3;
+      --good: #1f6b45;
+      --good-soft: #e7f3ec;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .wrap {
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 72px;
+    }
+
+    header {
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+      font-size: clamp(34px, 5vw, 52px);
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+
+    .lede {
+      max-width: 68ch;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .stat {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+
+    .stat b {
+      display: block;
+      font-family: Georgia, "Iowan Old Style", serif;
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    section {
+      margin-top: 36px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-family: Georgia, "Iowan Old Style", serif;
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      margin: 22px 0 8px;
+      font-size: 16px;
+    }
+
+    p { margin: 0 0 12px; }
+
+    .note {
+      background: var(--accent-soft);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-top: 8px;
+    }
+
+    .note strong { color: var(--accent); }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .step {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      min-height: 128px;
+    }
+
+    .step em {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--accent);
+      font-style: normal;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      font-size: 15px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      background: #f7f3eb;
+      font-size: 13px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+    ul { margin: 8px 0 0; padding-left: 18px; }
+    li { margin: 6px 0; }
+
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.92em;
+      background: #efeae0;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    pre {
+      background: #241f1b;
+      color: #f6f1e8;
+      border-radius: 14px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .pill {
+      display: inline-block;
+      background: var(--good-soft);
+      color: var(--good);
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 760px) {
+      .stats, .flow { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .stats, .flow { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="kicker">Assignment overview</p>
+      <h1>Read a rental agreement and return six fields.</h1>
+      <p class="lede">
+        The system takes a Word file or a scanned page and extracts the rent, the lease dates, the notice period, and the two parties. It does this with a vision-language model, not with patterns written for each template.
+      </p>
+      <div class="stats">
+        <div class="stat"><b>6</b><span>fields per agreement</span></div>
+        <div class="stat"><b>0.667</b><span>exact recall on the test set</span></div>
+        <div class="stat"><b>0.875</b><span>same score after trimming spaces</span></div>
+      </div>
+    </header>
+
+    <section>
+      <h2>Do we need a frontend?</h2>
+      <div class="note">
+        <p><strong>No.</strong> The brief does not ask for a website. The optional piece is a REST API, and that API is already built. This page only explains the work. It does not extract documents.</p>
+      </div>
+      <p style="margin-top: 14px">The PDF says a web service is optional: wrap the system so it can be called as an API, and document how to use it. <code>POST /extract</code> accepts one <code>.docx</code> or <code>.png</code> and returns the same six fields the batch script writes, plus the quote the model used for each field.</p>
+      <pre>uvicorn src.api:app --reload
+
+curl -F "file=@data/test/228094620-Rental-Agreement.pdf.docx" http://127.0.0.1:8000/extract</pre>
+      <p><code>GET /health</code> returns <code>{"status": "ok"}</code>. The API key stays in <code>MODEL_API_KEY</code> and is never sent by this page.</p>
+    </section>
+
+    <section>
+      <h2>What this achieves</h2>
+      <p>A person uploads a rental contract. The response is a structured record:</p>
+      <ul>
+        <li>Agreement value, the monthly rent as a plain integer</li>
+        <li>Agreement start date and end date, as <code>DD.MM.YYYY</code></li>
+        <li>Renewal notice, in days</li>
+        <li>Party one, the owner side, and party two, the tenant side</li>
+      </ul>
+      <p>The score the brief asks for is exact per-field recall: a field counts only when the string matches the label. On the four test agreements that score is 0.667. Most of the remaining gap is spaces and spelling in the labels, not a missed rent or date. After trimming spaces, recall is 0.875.</p>
+    </section>
+
+    <section>
+      <h2>What we used</h2>
+      <div class="flow">
+        <div class="step"><em>01 Read</em>Word files become ordered text with <code>python-docx</code>. Scans stay images.</div>
+        <div class="step"><em>02 Ask</em>Muse Spark 1.3 Contributor reads the page and fills a JSON schema.</div>
+        <div class="step"><em>03 Check</em>Each quote must appear in the Word text. One repair call is allowed.</div>
+        <div class="step"><em>04 Score</em>Predictions are compared with the CSV, field by field.</div>
+      </div>
+      <h3>Model</h3>
+      <p>Meta Model API, model id <code>muse-spark-1.3-contributor</code>, base URL <code>https://api.meta.ai/v1</code>. The same model reads text and images. Output is constrained with <code>response_format</code> so the reply is the schema, not a paragraph. Reasoning effort is <code>low</code>. Temperature is left at the API default, which is how Muse Spark is tuned.</p>
+      <h3>Why not a regex or a fine-tuned layout model</h3>
+      <p>The brief forbids rule-based extraction. The templates also disagree with each other: lessor and lessee, owner and tenant, rent in rupees or pesos, notice written as “three month” rather than <code>90</code>. There are about ten labeled files, which is too few to train a layout model on, and several answers are calculated from a clause rather than copied from one span.</p>
+    </section>
+
+    <section>
+      <h2>What is in the dataset</h2>
+      <p>Rental agreements from India, the Philippines, and one unlabeled California management contract. Files are <code>.docx</code> or <code>.png</code>. Two test Word files are named <code>.pdf.docx</code>.</p>
+      <table>
+        <thead>
+          <tr><th>Piece</th><th class="num">Count</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>data/train.csv</code></td><td class="num">10 rows</td><td>Labels. One of these files actually lives in the test folder.</td></tr>
+          <tr><td><code>data/test.csv</code></td><td class="num">4 rows</td><td>The evaluation set. Scored once.</td></tr>
+          <tr><td><code>data/train/</code></td><td class="num">10 files</td><td>7 Word files and 3 scans. One Word file has no label row.</td></tr>
+          <tr><td><code>data/test/</code></td><td class="num">4 files</td><td>2 Word files and 2 scans.</td></tr>
+        </tbody>
+      </table>
+      <p>The CSV columns are spelled <code>Aggrement Value</code>, <code>Aggrement Start Date</code>, and <code>Aggrement End Date</code>. Predictions keep that spelling.</p>
+    </section>
+
+    <section>
+      <h2>What was done to the dataset</h2>
+      <p>The files were not relabeled. They were read, compared with the CSV, and split so the model is not shown the pages it is scored on.</p>
+      <h3>Problems found in the labels</h3>
+      <ul>
+        <li><code>24158401-Rental-Agreement</code> is listed in <code>train.csv</code> and stored under <code>data/test/</code>. It is scored only as a test file, and it is not used as an example.</li>
+        <li><code>46239065-Standard-Rental-Agreement-...</code> is in <code>train/</code> with no label. It is not scored.</li>
+        <li>Some end dates are impossible calendar days: <code>31.11.2009</code>, <code>31.02.2011</code>, <code>31.04.2011</code>. The sheet often forces day 31.</li>
+        <li>The Galinato contract says <code>GERALDINE O. GALINATO</code> in the recital and <code>GERALDINE Q. GALINATO</code> on the signature. The CSV uses Q.</li>
+        <li>The page-1 Galinato file does not contain the 15-day notice. The full contract does.</li>
+        <li><code>44737744</code> is a Word file whose text is already garbled. The rent and dates in its label cannot be read from that text.</li>
+        <li>Party cells carry stray spaces, such as <code>Hanumaiah </code> and <code> KAPIL MEHROTRA </code>.</li>
+      </ul>
+      <h3>How the files were split</h3>
+      <p>Two labeled Word files are shown to the model as worked examples: <code>50070534</code> and the full Galinato contract. Three other training files are a development check, including one scan. The four test files were run once after the instruction was frozen. The examples follow the document, including where a name spelling disagrees with the CSV.</p>
+    </section>
+
+    <section>
+      <h2>Test score</h2>
+      <p>Exact recall is the official metric. Trimmed recall collapses spaces so a label like <code>Hanumaiah </code> can be told apart from a wrong name. <span class="pill">4 documents</span></p>
+      <table>
+        <thead>
+          <tr><th>Field</th><th class="num">Exact</th><th class="num">Trimmed</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Agreement value</td><td class="num">1.000</td><td class="num">1.000</td></tr>
+          <tr><td>Start date</td><td class="num">1.000</td><td class="num">1.000</td></tr>
+          <tr><td>End date</td><td class="num">0.750</td><td class="num">0.750</td></tr>
+          <tr><td>Renewal notice</td><td class="num">1.000</td><td class="num">1.000</td></tr>
+          <tr><td>Party one</td><td class="num">0.000</td><td class="num">1.000</td></tr>
+          <tr><td>Party two</td><td class="num">0.250</td><td class="num">0.500</td></tr>
+          <tr><td>All fields</td><td class="num">0.667</td><td class="num">0.875</td></tr>
+        </tbody>
+      </table>
+      <p>Every party-one miss is a space in the CSV. The names match. The end-date miss is <code>95980236</code>: the scan says eleven months from 1 April 2010 and prints no end date, so the model returns <code>28.02.2011</code> and the CSV says <code>31.03.2011</code>. One tenant keeps the printed word <code>SRI</code>. Another is <code>B.Kishore</code> where the label is <code>.B.Kishore</code>.</p>
+      <p>Rent, start date, and notice period match on all four test files. Predictions are in <code>predictions/test_predictions.csv</code>. The quote for each field is in <code>predictions/test_details.json</code>.</p>
+    </section>
+
+    <footer>
+      Open this file in a browser. The extractor itself is <code>python -m src.cli extract --split test</code>. Details and run steps are in <code>README.md</code>.
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+documents: 3
+micro exact recall: 0.556
+micro trimmed recall: 0.778
+
+field                       exact  trimmed
+agreement_value             1.000    1.000
+agreement_start_date        1.000    1.000
+agreement_end_date          0.000    0.000
+renewal_notice_days         1.000    1.000
+party_one                   0.000    0.667
+party_two                   0.333    1.000
+
+misses:
+- 18325926-Rental-Agreement-1 | agreement_end_date | gold='31.11.2009' | predicted='04.11.2009'
+- 18325926-Rental-Agreement-1 | party_one | gold='MR.K.Kuttan ' | predicted='K.Kuttan'
+- 18325926-Rental-Agreement-1 | party_two | gold='P.M. Narayana Namboodri ' | predicted='P.M. Narayana Namboodri'
+- 36199312-Rental-Agreement | agreement_end_date | gold='31.04.2011' | predicted='31.03.2011'
+- 36199312-Rental-Agreement | party_one | gold='Balaji.R ' | predicted='Balaji.R'
+- 47854715-RENTAL-AGREEMENT | agreement_end_date | gold='31.02.2011' | predicted='28.02.2011'
+- 47854715-RENTAL-AGREEMENT | party_one | gold=' P C MATHEW' | predicted='P C MATHEW'
+- 47854715-RENTAL-AGREEMENT | party_two | gold=' L GOPINATH ' | predicted='L GOPINATH'
